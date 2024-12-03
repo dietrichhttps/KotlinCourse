@@ -12,6 +12,6 @@ class ShoeCard(
 ) {
     override fun printInfo() {
         super.printInfo()
-        print("Size: $size")
+        println("Size: $size")
     }
 }

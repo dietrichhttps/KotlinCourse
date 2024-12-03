@@ -1,5 +1,7 @@
 package corporation
 
+import corporation.OperationCode.*
+
 class Accountant(
     name: String,
     age: Int
@@ -7,23 +9,27 @@ class Accountant(
     name,
     age
 ) {
+
+    val items = mutableListOf<ProductCard>()
+
     override fun work() {
         val operationCodes = OperationCode.entries
-        print("Enter the operation code. ")
-        for ((index, code) in operationCodes.withIndex()) {
-            print("$index - ${code.title}")
-            if (index == operationCodes.size - 1) {
-                print(": ")
-            } else {
-                print(", ")
-            }
-        }
-        val operationCodeIndex = readln().toInt()
-        val operationCode: OperationCode = operationCodes[operationCodeIndex]
         while (true) {
+            print("Enter the operation code. ")
+            for ((index, code) in operationCodes.withIndex()) {
+                print("$index - ${code.title}")
+                if (index == operationCodes.size - 1) {
+                    print(": ")
+                } else {
+                    print(", ")
+                }
+            }
+            val operationCodeIndex = readln().toInt()
+            val operationCode: OperationCode = operationCodes[operationCodeIndex]
             when (operationCode) {
-                OperationCode.EXIT -> break
-                OperationCode.REGISTER_NEW_ITEM -> registerItem()
+                EXIT -> break
+                REGISTER_NEW_ITEM -> registerItem()
+                SHOW_ALL_ITEMS -> showAllItems()
             }
         }
     }
@@ -63,7 +69,12 @@ class Accountant(
                 ShoeCard(productName, productBrand, productPrice, readln().toFloat())
             }
         }
-        productCard.printInfo()
-        println()
+        items.add(productCard)
+    }
+
+    fun showAllItems() {
+        for (item in items) {
+            item.printInfo()
+        }
     }
 }

@@ -12,6 +12,6 @@ class ElectronicCard(
 ) {
     override fun printInfo() {
         super.printInfo()
-        print("Voltage: $voltage")
+        println("Voltage: $voltage")
     }
 }
