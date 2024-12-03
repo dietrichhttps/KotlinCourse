@@ -1,46 +1,69 @@
 package corporation
 
- class Accountant(
+class Accountant(
     name: String,
     age: Int
-): Worker(
+) : Worker(
     name,
     age
 ) {
     override fun work() {
-        print("Enter the operation code. 0 - exit, 1 - register new item: ")
-        var operationCode = readln()
-        while (operationCode != "0") {
-            print("Enter the product type. 0 - Food, 1 - Electronic, 2 - Shoe: ")
-            val productTypeCode = readln()
-            print("Enter the product name: ")
-            val productName = readln()
-            print("Enter the product brand: ")
-            val productBrand = readln()
-            print("Enter the product price: ")
-            val productPrice = readln().toInt()
-            val productCard = when (productTypeCode) {
-                "0" -> {
-                    print("Enter the calorie: ")
-                    FoodCard(productName, productBrand, productPrice, readln().toFloat())
-                }
-                "1" -> {
-                    print("Enter the voltage: ")
-                    ElectronicCard(productName, productBrand, productPrice, readln().toInt())
-                }
-                "2" -> {
-                    print("Enter the size: ")
-                    ShoeCard(productName, productBrand, productPrice, readln().toFloat())
-                }
-
-                else -> {
-                    println("Invalid code")
-                    null
-                }
+        val operationCodes = OperationCode.entries
+        print("Enter the operation code. ")
+        for ((index, code) in operationCodes.withIndex()) {
+            print("$index - ${code.title}")
+            if (index == operationCodes.size - 1) {
+                print(": ")
+            } else {
+                print(", ")
             }
-            productCard?.printInfo()
-            print("\nEnter the operation code. 0 - exit, 1 - register new item: ")
-            operationCode = readln()
         }
+        val operationCodeIndex = readln().toInt()
+        val operationCode: OperationCode = operationCodes[operationCodeIndex]
+        while (true) {
+            when (operationCode) {
+                OperationCode.EXIT -> break
+                OperationCode.REGISTER_NEW_ITEM -> registerItem()
+            }
+        }
+    }
+
+    fun registerItem() {
+        val productTypes = ProductType.entries
+        print("Enter the product type. ")
+        for ((index, type) in productTypes.withIndex()) {
+            print("$index - ${type.title}")
+            if (index == productTypes.size - 1) {
+                print(": ")
+            } else {
+                print(", ")
+            }
+        }
+        val productTypeIndex = readln().toInt()
+        val productType: ProductType = productTypes[productTypeIndex]
+        print("Enter the product name: ")
+        val productName = readln()
+        print("Enter the product brand: ")
+        val productBrand = readln()
+        print("Enter the product price: ")
+        val productPrice = readln().toInt()
+        val productCard = when (productType) {
+            ProductType.FOOD -> {
+                print("Enter the calorie: ")
+                FoodCard(productName, productBrand, productPrice, readln().toFloat())
+            }
+
+            ProductType.ELECTRONIC -> {
+                print("Enter the voltage: ")
+                ElectronicCard(productName, productBrand, productPrice, readln().toInt())
+            }
+
+            ProductType.SHOE -> {
+                print("Enter the size: ")
+                ShoeCard(productName, productBrand, productPrice, readln().toFloat())
+            }
+        }
+        productCard.printInfo()
+        println()
     }
 }
