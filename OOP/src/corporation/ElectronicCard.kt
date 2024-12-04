@@ -8,7 +8,8 @@ class ElectronicCard(
 ): ProductCard(
     name = name,
     brand = brand,
-    price = price
+    price = price,
+    ProductType.ELECTRONIC
 ) {
     override fun printInfo() {
         super.printInfo()
