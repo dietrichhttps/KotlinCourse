@@ -1,11 +1,14 @@
 package corporation
 
- class Assistant(
+class Assistant(
+    id: Int,
     name: String,
     age: Int
-): Worker(
+) : Worker(
+    id,
     name,
-    age
+    age,
+    PositionType.ASSISTANT
 ) {
     override fun work() {
         println("I'm answering the phone now")

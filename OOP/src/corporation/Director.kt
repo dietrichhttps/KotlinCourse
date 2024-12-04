@@ -1,11 +1,14 @@
 package corporation
 
- class Director(
+class Director(
+    id: Int,
     name: String,
     age: Int
-): Worker(
+) : Worker(
+    id,
     name,
-    age
+    age,
+    PositionType.DIRECTOR
 ) {
     override fun work() {
         println("I'm drinking coffee and reading reports")

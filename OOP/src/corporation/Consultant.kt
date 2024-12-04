@@ -1,11 +1,14 @@
 package corporation
 
- class Consultant(
+class Consultant(
+    id: Int,
     name: String,
     age: Int
-): Worker(
+) : Worker(
+    id,
     name,
-    age
+    age,
+    PositionType.CONSULTANT
 ) {
     override fun work() {
         println("I'm consulting clients")
