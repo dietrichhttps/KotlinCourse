@@ -14,8 +14,8 @@ class Accountant(
     PositionType.ACCOUNTANT
 ) {
 
-    val fileProductCards = File("product_cards.txt ")
-    val fileEmployees = File("employees.txt ")
+    private val fileProductCards = File("product_cards.txt ")
+    private val fileEmployees = File("employees.txt ")
 
     override fun work() {
         val operationCodes = OperationCode.entries
@@ -38,7 +38,7 @@ class Accountant(
         }
     }
 
-    fun loadAllCards(): MutableList<ProductCard> {
+    private fun loadAllCards(): MutableList<ProductCard> {
         val cards = mutableListOf<ProductCard>()
 
         if (!fileProductCards.exists()) fileEmployees.createNewFile()
@@ -73,7 +73,7 @@ class Accountant(
         return cards
     }
 
-    fun saveProductCardToFile(productCard: ProductCard) {
+    private fun saveProductCardToFile(productCard: ProductCard) {
         fileProductCards.appendText("${productCard.name}%${productCard.brand}%${productCard.price}%")
         when (productCard) {
             is FoodCard -> fileProductCards.appendText("${productCard.calorie}%")
@@ -83,7 +83,7 @@ class Accountant(
         fileProductCards.appendText("${productCard.productType}\n")
     }
 
-    fun registerItem() {
+    private fun registerItem() {
         val productTypes = ProductType.entries
         print("Enter the product type. ")
         for ((index, type) in productTypes.withIndex()) {
@@ -124,7 +124,7 @@ class Accountant(
         saveProductCardToFile(card)
     }
 
-    fun showAllItems() {
+    private fun showAllItems() {
         val cards = loadAllCards()
         if (cards.isNotEmpty()) {
             for (card in cards) {
@@ -134,7 +134,7 @@ class Accountant(
 
     }
 
-    fun removeProductCard() {
+    private fun removeProductCard() {
         val cards = loadAllCards()
         print("Enter name of card for removing: ")
         val name = readln()
@@ -150,7 +150,7 @@ class Accountant(
         }
     }
 
-    fun registerNewEmployee() {
+    private fun registerNewEmployee() {
         val positionTypes = PositionType.entries
         print("Choose position - ")
         for ((index, type) in positionTypes.withIndex()) {
@@ -178,21 +178,21 @@ class Accountant(
         saveEmployeeToFile(employee)
     }
 
-    fun saveEmployeeToFile(worker: Worker) {
+    private fun saveEmployeeToFile(worker: Worker) {
         fileEmployees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.positionType}\n")
     }
 
-    fun showAllEmployees() {
+    private fun showAllEmployees() {
         val employees = loadAllEmployees()
         for (employee in employees) {
             employee.printInfo()
         }
     }
 
-    fun loadAllEmployees(): MutableList<Worker> {
+    private fun loadAllEmployees(): MutableList<Worker> {
         val employees = mutableListOf<Worker>()
 
-        if(!fileEmployees.exists()) fileEmployees.createNewFile()
+        if (!fileEmployees.exists()) fileEmployees.createNewFile()
         val lines = fileEmployees.readLines()
         if (lines.isEmpty()) return employees
 
@@ -214,7 +214,7 @@ class Accountant(
         return employees
     }
 
-    fun fireAnEmployee() {
+    private fun fireAnEmployee() {
         val employees = loadAllEmployees()
         print("Enter employee's id to fire: ")
         val id = readln().toInt()
