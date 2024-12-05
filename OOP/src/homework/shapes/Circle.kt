@@ -1,6 +1,6 @@
-package homework
+package homework.shapes
 
-class Circle(val radius: Double): Shape() {
+class Circle(val radius: Double) : Shape() {
 
     override fun area(): Double {
         return roundToTwoDecimals(Math.PI * (radius * radius))

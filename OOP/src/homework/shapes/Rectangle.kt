@@ -1,6 +1,6 @@
-package homework
+package homework.shapes
 
-class Rectangle(val width: Double, val height: Double): Shape() {
+class Rectangle(val width: Double, val height: Double) : Shape() {
 
     override fun area(): Double {
         return roundToTwoDecimals(width * height)

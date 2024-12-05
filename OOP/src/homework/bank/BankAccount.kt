@@ -1,4 +1,4 @@
-package homework
+package homework.bank
 
 open class BankAccount {
 

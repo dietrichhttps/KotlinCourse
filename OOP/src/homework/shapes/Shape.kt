@@ -1,4 +1,4 @@
-package homework
+package homework.shapes
 
 import kotlin.math.round
 
@@ -9,7 +9,7 @@ abstract class Shape {
     abstract fun area(): Double
     abstract fun perimeter(): Double
 
-    protected fun roundToTwoDecimals(value: Double): Double{
+    protected fun roundToTwoDecimals(value: Double): Double {
         return round(value * 100) / 100
     }
 }
