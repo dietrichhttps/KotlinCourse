@@ -1,6 +1,6 @@
 package corporation
 
-enum class PositionType(val title: String) {
+enum class Position(val title: String) {
     DIRECTOR("Director"),
     ACCOUNTANT("Accountant"),
     ASSISTANT("Assistant"),

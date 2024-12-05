@@ -3,19 +3,18 @@ package corporation
 import corporation.OperationCode.*
 import java.io.File
 
-class Accountant(
-    id: Int,
-    name: String,
-    age: Int
-) : Worker(
-    id,
-    name,
-    age,
-    PositionType.ACCOUNTANT
-) {
+class Accountant(id: Int, name: String, age: Int) : Worker(id, name, age, Position.ACCOUNTANT), Cleaner, Supplier {
 
     private val fileProductCards = File("product_cards.txt ")
     private val fileEmployees = File("employees.txt ")
+
+    override fun clean() {
+        println("I'm ${position.title}. I'm cleaning workplace...")
+    }
+
+    override fun supply() {
+        println("I'm ${position.title}. I'm buying things...")
+    }
 
     override fun work() {
         val operationCodes = OperationCode.entries
@@ -151,18 +150,18 @@ class Accountant(
     }
 
     private fun registerNewEmployee() {
-        val positionTypes = PositionType.entries
+        val positions = Position.entries
         print("Choose position - ")
-        for ((index, type) in positionTypes.withIndex()) {
+        for ((index, type) in positions.withIndex()) {
             print("$index - ${type.title}")
-            if (index == positionTypes.size - 1) {
+            if (index == positions.size - 1) {
                 print(": ")
             } else {
                 print(", ")
             }
         }
         val positionTypeIndex = readln().toInt()
-        val positionType = positionTypes[positionTypeIndex]
+        val positionType = positions[positionTypeIndex]
         print("Enter id: ")
         val employeeId = readln().toInt()
         print("Enter name: ")
@@ -170,16 +169,16 @@ class Accountant(
         print("Enter age: ")
         val employeeAge = readln().toInt()
         val employee = when (positionType) {
-            PositionType.DIRECTOR -> Director(employeeId, employeeName, employeeAge)
-            PositionType.ACCOUNTANT -> Accountant(employeeId, employeeName, employeeAge)
-            PositionType.ASSISTANT -> Assistant(employeeId, employeeName, employeeAge)
-            PositionType.CONSULTANT -> Consultant(employeeId, employeeName, employeeAge)
+            Position.DIRECTOR -> Director(employeeId, employeeName, employeeAge)
+            Position.ACCOUNTANT -> Accountant(employeeId, employeeName, employeeAge)
+            Position.ASSISTANT -> Assistant(employeeId, employeeName, employeeAge)
+            Position.CONSULTANT -> Consultant(employeeId, employeeName, employeeAge)
         }
         saveEmployeeToFile(employee)
     }
 
     private fun saveEmployeeToFile(worker: Worker) {
-        fileEmployees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.positionType}\n")
+        fileEmployees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.position}\n")
     }
 
     private fun showAllEmployees() {
@@ -202,12 +201,12 @@ class Accountant(
             val name = args[1]
             val age = args[2].toInt()
             val type = args.last()
-            val positionType = PositionType.valueOf(type)
-            val employee = when (positionType) {
-                PositionType.DIRECTOR -> Director(id, name, age)
-                PositionType.ACCOUNTANT -> Accountant(id, name, age)
-                PositionType.ASSISTANT -> Assistant(id, name, age)
-                PositionType.CONSULTANT -> Consultant(id, name, age)
+            val position = Position.valueOf(type)
+            val employee = when (position) {
+                Position.DIRECTOR -> Director(id, name, age)
+                Position.ACCOUNTANT -> Accountant(id, name, age)
+                Position.ASSISTANT -> Assistant(id, name, age)
+                Position.CONSULTANT -> Consultant(id, name, age)
             }
             employees.add(employee)
         }
