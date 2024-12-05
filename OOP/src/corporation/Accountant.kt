@@ -189,7 +189,7 @@ class Accountant(
         }
     }
 
-    private fun loadAllEmployees(): MutableList<Worker> {
+    fun loadAllEmployees(): MutableList<Worker> {
         val employees = mutableListOf<Worker>()
 
         if (!fileEmployees.exists()) fileEmployees.createNewFile()
