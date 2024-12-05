@@ -11,7 +11,8 @@ class ElectronicCard(
     price = price,
     ProductType.ELECTRONIC
 ) {
-    override fun printInfo() {
-        println("Name $name Brand: $brand Price: $price Voltage: $voltage Product type: $productType")
+
+    override fun toString(): String {
+        return "Name $name Brand: $brand Price: $price Voltage: $voltage Product type: $productType"
     }
 }

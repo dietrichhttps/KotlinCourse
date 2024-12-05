@@ -11,7 +11,8 @@ class ShoeCard(
     price = price,
     ProductType.SHOE
 ) {
-    override fun printInfo() {
-        println("Name $name Brand: $brand Price: $price Size: $size Product type: $productType")
+
+    override fun toString(): String {
+        return "Name $name Brand: $brand Price: $price Size: $size Product type: $productType"
     }
 }

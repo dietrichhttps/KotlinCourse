@@ -11,7 +11,8 @@ class FoodCard(
     price = price,
     ProductType.FOOD
 ) {
-    override fun printInfo() {
-        println("Name $name Brand: $brand Price: $price Calories: $calorie Product type: $productType")
+
+    override fun toString(): String {
+        return "Name $name Brand: $brand Price: $price Calories: $calorie Product type: $productType"
     }
 }
