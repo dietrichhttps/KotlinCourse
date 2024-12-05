@@ -12,7 +12,6 @@ class ElectronicCard(
     ProductType.ELECTRONIC
 ) {
     override fun printInfo() {
-        super.printInfo()
-        println("Voltage: $voltage")
+        println("Name $name Brand: $brand Price: $price Voltage: $voltage Product type: $productType")
     }
 }
