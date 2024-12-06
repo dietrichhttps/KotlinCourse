@@ -33,7 +33,23 @@ class Accountant(id: Int, name: String, age: Int) : Worker(id, name, age, Positi
                 REGISTER_NEW_EMPLOYEE -> registerNewEmployee()
                 FIRE_AN_EMPLOYEE -> fireAnEmployee()
                 SHOW_ALL_EMPLOYEE -> showAllEmployees()
+                CHANGE_SALARY -> changeSalary()
             }
+        }
+    }
+
+    private fun changeSalary() {
+        val employees = loadAllEmployees()
+        print("Enter employee's id to change salary: ")
+        val id = readln().toInt()
+        print("Enter new salary: ")
+        val salary = readln().toInt()
+        fileEmployees.writeText("")
+        for (employee in employees) {
+            if (employee.id == id) {
+                employee.salary = salary
+            }
+            saveEmployeeToFile(employee)
         }
     }
 
@@ -168,17 +184,20 @@ class Accountant(id: Int, name: String, age: Int) : Worker(id, name, age, Positi
         val employeeName = readln()
         print("Enter age: ")
         val employeeAge = readln().toInt()
+        print("Enter salary: ")
+        val employeeSalary = readln().toInt()
         val employee = when (positionType) {
             Position.DIRECTOR -> Director(employeeId, employeeName, employeeAge)
             Position.ACCOUNTANT -> Accountant(employeeId, employeeName, employeeAge)
             Position.ASSISTANT -> Assistant(employeeId, employeeName, employeeAge)
             Position.CONSULTANT -> Consultant(employeeId, employeeName, employeeAge)
         }
+        employee.salary = employeeSalary
         saveEmployeeToFile(employee)
     }
 
     private fun saveEmployeeToFile(worker: Worker) {
-        fileEmployees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.position}\n")
+        fileEmployees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.salary}%${worker.position}\n")
     }
 
     private fun showAllEmployees() {
@@ -200,6 +219,7 @@ class Accountant(id: Int, name: String, age: Int) : Worker(id, name, age, Positi
             val id = args[0].toInt()
             val name = args[1]
             val age = args[2].toInt()
+            val salary = args[3].toInt()
             val type = args.last()
             val position = Position.valueOf(type)
             val employee = when (position) {
@@ -208,6 +228,7 @@ class Accountant(id: Int, name: String, age: Int) : Worker(id, name, age, Positi
                 Position.ASSISTANT -> Assistant(id, name, age)
                 Position.CONSULTANT -> Consultant(id, name, age)
             }
+            employee.salary = salary
             employees.add(employee)
         }
         return employees
