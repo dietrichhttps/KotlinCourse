@@ -5,27 +5,32 @@ import java.io.File
 class ProductCardsRepository {
 
     private val fileProductCards = File("product_cards.txt ")
+    val productCards = loadAllCards()
 
     fun registerNewItem(productCard: ProductCard) {
-        saveProductCardToFile(productCard)
+        productCards.add(productCard)
     }
 
-    private fun saveProductCardToFile(productCard: ProductCard) {
-        fileProductCards.appendText("${productCard.name}%${productCard.brand}%${productCard.price}%")
-        when (productCard) {
-            is FoodCard -> fileProductCards.appendText("${productCard.calorie}%")
-            is ElectronicCard -> fileProductCards.appendText("${productCard.voltage}%")
-            is ShoeCard -> fileProductCards.appendText("${productCard.size}%")
+    fun saveChanges() {
+        val content = StringBuilder()
+        for (productCard in productCards) {
+            content.append("${productCard.name}%${productCard.brand}%${productCard.price}%")
+            when (productCard) {
+                is FoodCard -> content.append("${productCard.calorie}%")
+                is ElectronicCard -> content.append("${productCard.voltage}%")
+                is ShoeCard -> content.append("${productCard.size}%")
+            }
+            content.append("${productCard.productType}\n")
         }
-        fileProductCards.appendText("${productCard.productType}\n")
+        fileProductCards.writeText(content.toString())
     }
 
-    fun loadAllCards(): MutableList<ProductCard> {
-        val cards = mutableListOf<ProductCard>()
+    private fun loadAllCards(): MutableList<ProductCard> {
+        val productCards = mutableListOf<ProductCard>()
 
         if (!fileProductCards.exists()) fileProductCards.createNewFile()
         val lines = fileProductCards.readLines()
-        if (lines.isEmpty()) return cards
+        if (lines.isEmpty()) return productCards
 
         for (line in lines) {
             val args = line.split("%")
@@ -50,22 +55,17 @@ class ProductCardsRepository {
                     ShoeCard(name, brand, price, size)
                 }
             }
-            cards.add(productCard)
+            productCards.add(productCard)
         }
-        return cards
+        return productCards
     }
 
     fun removeProductCard(name: String) {
-        val cards = loadAllCards()
-        for (card in cards) {
-            if (card.name == name) {
-                cards.remove(card)
+        for (productCard in productCards) {
+            if (productCard.name == name) {
+                productCards.remove(productCard)
                 break
             }
-        }
-        fileProductCards.writeText("")
-        for (card in cards) {
-            saveProductCardToFile(card)
         }
     }
 }

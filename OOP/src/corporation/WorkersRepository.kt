@@ -4,32 +4,26 @@ import java.io.File
 
 class WorkersRepository {
 
-    private val fileEmployees = File("employees.txt ")
+    private val fileWorkers = File("employees.txt ")
+    val workers = loadAllEmployees()
 
     fun registerNewEmployee(worker: Worker) {
-        saveEmployeeToFile(worker)
+        workers.add(worker)
     }
 
-    fun changeSalary(id: Int, salary: Int) {
-        val employees = loadAllEmployees()
-        fileEmployees.writeText("")
-        for (employee in employees) {
-            if (employee.id == id) {
-                employee.setSalary(salary)
-            }
-            saveEmployeeToFile(employee)
+    fun saveChanges() {
+        val content = StringBuilder()
+        for (worker in workers) {
+            content.append("${worker.id}%${worker.name}%${worker.age}%${worker.getSalary()}%${worker.position}\n")
         }
+        fileWorkers.writeText(content.toString())
     }
 
-    private fun saveEmployeeToFile(worker: Worker) {
-        fileEmployees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.getSalary()}%${worker.position}\n")
-    }
-
-    fun loadAllEmployees(): MutableList<Worker> {
+    private fun loadAllEmployees(): MutableList<Worker> {
         val employees = mutableListOf<Worker>()
 
-        if (!fileEmployees.exists()) fileEmployees.createNewFile()
-        val lines = fileEmployees.readLines()
+        if (!fileWorkers.exists()) fileWorkers.createNewFile()
+        val lines = fileWorkers.readLines()
         if (lines.isEmpty()) return employees
 
         for (line in lines) {
@@ -52,16 +46,19 @@ class WorkersRepository {
     }
 
     fun fireEmployee(id: Int) {
-        val employees = loadAllEmployees()
-        for (employee in employees) {
-            if (employee.id == id) {
-                employees.remove(employee)
+        for (worker in workers) {
+            if (worker.id == id) {
+                workers.remove(worker)
                 break
             }
         }
-        fileEmployees.writeText("")
-        for (employee in employees) {
-            saveEmployeeToFile(employee)
+    }
+
+    fun changeSalary(id: Int, salary: Int) {
+        for (worker in workers) {
+            if (worker.id == id) {
+                worker.setSalary(salary)
+            }
         }
     }
 }
