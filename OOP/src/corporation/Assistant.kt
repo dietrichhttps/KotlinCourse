@@ -1,6 +1,17 @@
 package corporation
 
-class Assistant(id: Int, name: String, age: Int) : Worker(id, name, age, Position.ASSISTANT), Cleaner, Supplier {
+class Assistant(
+    id: Int,
+    name: String,
+    age: Int,
+    salary: Int
+) : Worker(
+    id = id,
+    name = name,
+    age = age,
+    salary = salary,
+    Position.ASSISTANT
+), Cleaner, Supplier {
 
     override fun clean() {
         println("I'm ${position.title}. I'm cleaning workplace...")

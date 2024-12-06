@@ -3,7 +3,18 @@ package corporation
 import corporation.OperationCode.*
 import java.io.File
 
-class Accountant(id: Int, name: String, age: Int) : Worker(id, name, age, Position.ACCOUNTANT), Cleaner, Supplier {
+class Accountant(
+    id: Int,
+    name: String,
+    age: Int,
+    salary: Int
+) : Worker(
+    id = id,
+    name = name,
+    age = age,
+    salary = salary,
+    position = Position.ACCOUNTANT
+), Cleaner, Supplier {
 
     private val fileProductCards = File("product_cards.txt ")
     private val fileEmployees = File("employees.txt ")
@@ -47,7 +58,7 @@ class Accountant(id: Int, name: String, age: Int) : Worker(id, name, age, Positi
         fileEmployees.writeText("")
         for (employee in employees) {
             if (employee.id == id) {
-                employee.salary = salary
+                employee.setSalary(salary)
             }
             saveEmployeeToFile(employee)
         }
@@ -176,28 +187,28 @@ class Accountant(id: Int, name: String, age: Int) : Worker(id, name, age, Positi
                 print(", ")
             }
         }
-        val positionTypeIndex = readln().toInt()
-        val positionType = positions[positionTypeIndex]
+        val positionIndex = readln().toInt()
+        val position = positions[positionIndex]
         print("Enter id: ")
-        val employeeId = readln().toInt()
+        val id = readln().toInt()
         print("Enter name: ")
-        val employeeName = readln()
+        val name = readln()
         print("Enter age: ")
-        val employeeAge = readln().toInt()
+        val age = readln().toInt()
         print("Enter salary: ")
-        val employeeSalary = readln().toInt()
-        val employee = when (positionType) {
-            Position.DIRECTOR -> Director(employeeId, employeeName, employeeAge)
-            Position.ACCOUNTANT -> Accountant(employeeId, employeeName, employeeAge)
-            Position.ASSISTANT -> Assistant(employeeId, employeeName, employeeAge)
-            Position.CONSULTANT -> Consultant(employeeId, employeeName, employeeAge)
+        val salary = readln().toInt()
+        val employee = when (position) {
+            Position.DIRECTOR -> Director(id, name, age, salary)
+            Position.ACCOUNTANT -> Accountant(id, name, age, salary)
+            Position.ASSISTANT -> Assistant(id, name, age, salary)
+            Position.CONSULTANT -> Consultant(id, name, age, salary)
         }
-        employee.salary = employeeSalary
+        employee.setSalary(salary)
         saveEmployeeToFile(employee)
     }
 
     private fun saveEmployeeToFile(worker: Worker) {
-        fileEmployees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.salary}%${worker.position}\n")
+        fileEmployees.appendText("${worker.id}%${worker.name}%${worker.age}%${worker.getSalary()}%${worker.position}\n")
     }
 
     private fun showAllEmployees() {
@@ -223,12 +234,12 @@ class Accountant(id: Int, name: String, age: Int) : Worker(id, name, age, Positi
             val type = args.last()
             val position = Position.valueOf(type)
             val employee = when (position) {
-                Position.DIRECTOR -> Director(id, name, age)
-                Position.ACCOUNTANT -> Accountant(id, name, age)
-                Position.ASSISTANT -> Assistant(id, name, age)
-                Position.CONSULTANT -> Consultant(id, name, age)
+                Position.DIRECTOR -> Director(id, name, age, salary)
+                Position.ACCOUNTANT -> Accountant(id, name, age, salary)
+                Position.ASSISTANT -> Assistant(id, name, age, salary)
+                Position.CONSULTANT -> Consultant(id, name, age, salary)
             }
-            employee.salary = salary
+            employee.setSalary(salary)
             employees.add(employee)
         }
         return employees

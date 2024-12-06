@@ -1,6 +1,17 @@
 package corporation
 
-class Director(id: Int, name: String, age: Int) : Worker(id, name, age, Position.DIRECTOR), Supplier {
+class Director(
+    id: Int,
+    name: String,
+    age: Int,
+    salary: Int
+) : Worker(
+    id = id,
+    name = name,
+    age = age,
+    salary = salary,
+    position = Position.DIRECTOR
+), Supplier {
 
     override fun supply() {
         println("I'm ${position.title}. I'm buying things...")
