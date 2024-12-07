@@ -2,7 +2,7 @@ package corporation
 
 import java.io.File
 
-class WorkersRepository {
+object WorkersRepository {
 
     private val fileWorkers = File("employees.txt ")
     val workers = loadAllEmployees()
