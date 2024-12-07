@@ -5,15 +5,17 @@ import java.io.File
 object ProductCardsRepository {
 
     private val fileProductCards = File("product_cards.txt ")
-    val productCards = loadAllCards()
+    private val _productCards = loadAllCards()
+    val productCards: List<ProductCard>
+        get() = _productCards.toList()
 
     fun registerNewItem(productCard: ProductCard) {
-        productCards.add(productCard)
+        _productCards.add(productCard)
     }
 
     fun saveChanges() {
         val content = StringBuilder()
-        for (productCard in productCards) {
+        for (productCard in _productCards) {
             content.append("${productCard.name}%${productCard.brand}%${productCard.price}%")
             when (productCard) {
                 is FoodCard -> content.append("${productCard.calorie}%")
@@ -26,11 +28,11 @@ object ProductCardsRepository {
     }
 
     private fun loadAllCards(): MutableList<ProductCard> {
-        val productCards = mutableListOf<ProductCard>()
+        val _productCards = mutableListOf<ProductCard>()
 
         if (!fileProductCards.exists()) fileProductCards.createNewFile()
         val lines = fileProductCards.readLines()
-        if (lines.isEmpty()) return productCards
+        if (lines.isEmpty()) return _productCards
 
         for (line in lines) {
             val args = line.split("%")
@@ -55,15 +57,15 @@ object ProductCardsRepository {
                     ShoeCard(name, brand, price, size)
                 }
             }
-            productCards.add(productCard)
+            _productCards.add(productCard)
         }
-        return productCards
+        return _productCards
     }
 
     fun removeProductCard(name: String) {
-        for (productCard in productCards) {
+        for (productCard in _productCards) {
             if (productCard.name == name) {
-                productCards.remove(productCard)
+                _productCards.remove(productCard)
                 break
             }
         }
