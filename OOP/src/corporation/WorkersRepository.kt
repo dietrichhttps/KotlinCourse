@@ -9,8 +9,13 @@ object WorkersRepository {
     val workers: List<Worker>
         get() = _workers.toList()
 
-    fun registerNewEmployee(worker: Worker) {
-        _workers.add(worker)
+    fun registerNewEmployee(newWorker: Worker) {
+        for (worker in workers) {
+            if (worker == newWorker) {
+                return
+            }
+        }
+        _workers.add(newWorker)
     }
 
     fun saveChanges() {
