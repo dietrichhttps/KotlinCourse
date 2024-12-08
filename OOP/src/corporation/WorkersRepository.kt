@@ -2,18 +2,20 @@ package corporation
 
 import java.io.File
 
-class WorkersRepository {
+object WorkersRepository {
 
     private val fileWorkers = File("employees.txt ")
-    val workers = loadAllEmployees()
+    private val _workers = loadAllEmployees()
+    val workers: List<Worker>
+        get() = _workers.toList()
 
     fun registerNewEmployee(worker: Worker) {
-        workers.add(worker)
+        _workers.add(worker)
     }
 
     fun saveChanges() {
         val content = StringBuilder()
-        for (worker in workers) {
+        for (worker in _workers) {
             content.append("${worker.id}%${worker.name}%${worker.age}%${worker.getSalary()}%${worker.position}\n")
         }
         fileWorkers.writeText(content.toString())
@@ -46,16 +48,16 @@ class WorkersRepository {
     }
 
     fun fireEmployee(id: Int) {
-        for (worker in workers) {
+        for (worker in _workers) {
             if (worker.id == id) {
-                workers.remove(worker)
+                _workers.remove(worker)
                 break
             }
         }
     }
 
     fun changeSalary(id: Int, salary: Int) {
-        for (worker in workers) {
+        for (worker in _workers) {
             if (worker.id == id) {
                 worker.setSalary(salary)
             }
