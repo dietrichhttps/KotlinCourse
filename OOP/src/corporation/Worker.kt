@@ -4,19 +4,11 @@ abstract class Worker(
     val id: Int,
     val name: String,
     val age: Int,
-    private var salary: Int,
+    val salary: Int,
     val position: Position,
 ) {
 
-    fun getSalary() = salary
-
-    fun setSalary(value: Int) {
-        if (value < salary) {
-            println("The new salary is too small...")
-        } else {
-            salary = value
-        }
-    }
+    abstract fun copy(salary: Int = this.salary, age: Int = this.age): Worker
 
     abstract fun work()
 

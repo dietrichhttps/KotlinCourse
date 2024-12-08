@@ -17,6 +17,10 @@ class Director(
         println("I'm ${position.title}. I'm buying things...")
     }
 
+    override fun copy(salary: Int, age: Int): Director {
+        return Director(this.id, this.name, age, salary)
+    }
+
     override fun work() {
         println("I'm drinking coffee and reading reports")
     }

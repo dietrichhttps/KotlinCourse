@@ -17,6 +17,10 @@ class Consultant(
         println("I'm ${position.title}. I'm cleaning workplace...")
     }
 
+    override fun copy(salary: Int, age: Int): Consultant {
+        return Consultant(this.id, this.name, age, salary)
+    }
+
     override fun work() {
         println("I'm consulting clients")
     }
