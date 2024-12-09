@@ -27,8 +27,8 @@ object ProductCardsRepository {
         fileProductCards.writeText(content.toString())
     }
 
-    private fun loadAllCards(): MutableList<ProductCard> {
-        val _productCards = mutableListOf<ProductCard>()
+    private fun loadAllCards(): MutableSet<ProductCard> {
+        val productCards = mutableSetOf<ProductCard>()
 
         if (!fileProductCards.exists()) fileProductCards.createNewFile()
         val lines = fileProductCards.readLines()
@@ -57,9 +57,9 @@ object ProductCardsRepository {
                     ShoeCard(name, brand, price, size)
                 }
             }
-            _productCards.add(productCard)
+            productCards.add(productCard)
         }
-        return _productCards
+        return productCards
     }
 
     fun removeProductCard(name: String) {

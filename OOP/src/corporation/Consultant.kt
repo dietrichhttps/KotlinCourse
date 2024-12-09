@@ -1,10 +1,10 @@
 package corporation
 
-class Consultant(
-    id: Int,
-    name: String,
-    age: Int,
-    salary: Int
+data class Consultant(
+    override val id: Int,
+    override val name: String,
+    override val age: Int,
+    override val salary: Int
 ) : Worker(
     id = id,
     name = name,

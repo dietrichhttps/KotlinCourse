@@ -1,10 +1,10 @@
 package corporation
 
-class Assistant(
-    id: Int,
-    name: String,
-    age: Int,
-    salary: Int
+data class Assistant(
+    override val id: Int,
+    override val name: String,
+    override val age: Int,
+    override val salary: Int
 ) : Worker(
     id = id,
     name = name,

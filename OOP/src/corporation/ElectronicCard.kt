@@ -1,18 +1,13 @@
 package corporation
 
-class ElectronicCard(
-    name: String,
-    brand: String,
-    price: Int,
+data class ElectronicCard(
+    override val name: String,
+    override val brand: String,
+    override val price: Int,
     val voltage: Int
 ): ProductCard(
     name = name,
     brand = brand,
     price = price,
     ProductType.ELECTRONIC
-) {
-
-    override fun toString(): String {
-        return "Name $name Brand: $brand Price: $price Voltage: $voltage Product type: $productType"
-    }
-}
+)
