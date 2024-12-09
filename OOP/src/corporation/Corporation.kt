@@ -1,19 +1,9 @@
 package corporation
 
 fun main() {
-//    val accountant = Accountant(100,"Mike", 60, 50000)
-//    accountant.work()
-//    val assistant = WorkersRepository.findAssistant()
-//    val director = WorkersRepository.findDirector()
-//    assistant?.printInfo()
-//    director?.printInfo()
-//    val assistantSalary = assistant?.salary ?: 0
-//    val directorSalary = director?.salary ?: 0
-//    val sum = assistantSalary + directorSalary
-    val a = method()
-    println(a.hashCode())
+    val director = WorkersRepository.findDirector() ?: throwDirectorIsRequired()
 }
 
-fun method() {
-
+fun throwDirectorIsRequired(): Nothing {
+    throw IllegalArgumentException("Director is required for this program. Please add it to the file workers.txt")
 }
