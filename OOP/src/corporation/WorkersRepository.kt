@@ -9,6 +9,24 @@ object WorkersRepository {
     val workers: List<Worker>
         get() = _workers.toList()
 
+    fun findAssistant(): Assistant? {
+        for (worker in workers) {
+            if (worker is Assistant) {
+                return worker
+            }
+        }
+        return null
+    }
+
+    fun findDirector(): Director? {
+        for (worker in workers) {
+            if (worker is Director) {
+                return worker
+            }
+        }
+        return null
+    }
+
     fun registerNewEmployee(newWorker: Worker) {
         _workers.add(newWorker)
     }

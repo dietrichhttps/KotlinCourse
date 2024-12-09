@@ -1,6 +1,8 @@
 package corporation
 
 fun main() {
-    val accountant = Accountant(100,"Mike", 60, 50000)
-    accountant.work()
+//    val accountant = Accountant(100,"Mike", 60, 50000)
+//    accountant.work()
+    val assistant = WorkersRepository.findAssistant()
+    assistant?.printInfo()
 }
