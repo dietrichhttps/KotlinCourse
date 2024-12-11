@@ -1,0 +1,31 @@
+# Общие правила для всех проектов
+.gradle/
+build/
+out/
+.kotlin/
+.vscode/
+.DS_Store
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Gradle Wrapper
+!gradle/wrapper/gradle-wrapper.jar
+
+# Исключить результаты сборки
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Исключить bin папки
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
