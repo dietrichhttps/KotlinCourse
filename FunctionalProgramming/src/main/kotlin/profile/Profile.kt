@@ -1,7 +1,5 @@
 package profile
 
-import org.w3c.dom.ls.LSOutput
-
 fun main() {
     val profiles = ProfilesRepository.profiles
     var filteredProfiles = filter(profiles) { it.age > 25 }
