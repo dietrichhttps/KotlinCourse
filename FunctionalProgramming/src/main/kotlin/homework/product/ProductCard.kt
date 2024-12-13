@@ -6,12 +6,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ProductCard(
     @SerialName("id") val id: Int,
-    @SerialName("product_availability") val productAvailability: Boolean,
-    @SerialName("product_brand") val productBrand: String,
-    @SerialName("product_category") val productCategory: ProductCategory,
-    @SerialName("product_description") val productDescription: String,
-    @SerialName("product_image_url") val productImageUrl: String,
-    @SerialName("product_name") val productName: String,
-    @SerialName("product_price") val productPrice: Double,
-    @SerialName("product_rating") val productRating: Double
+    @SerialName("product_availability") val availability: Boolean,
+    @SerialName("product_brand") val brand: String,
+    @SerialName("product_category") val category: ProductCategory,
+    @SerialName("product_description") val description: String,
+    @SerialName("product_image_url") val imageUrl: String,
+    @SerialName("product_name") val name: String,
+    @SerialName("product_price") val price: Double,
+    @SerialName("product_rating") val rating: Double
 )
