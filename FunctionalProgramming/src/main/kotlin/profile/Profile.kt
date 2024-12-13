@@ -19,13 +19,3 @@ fun filter(profiles: List<Person>, isSuitable: (Person) -> Boolean): List<Person
     }
     return filteredProfiles
 }
-
-//fun filter(profiles: List<Person>, condition: Condition): List<Person> {
-//    val filteredProfiles = mutableListOf<Person>()
-//    for (profile in profiles) {
-//        if (condition.isSuitable(profile)) {
-//            filteredProfiles.add(profile)
-//        }
-//    }
-//    return filteredProfiles
-//}
