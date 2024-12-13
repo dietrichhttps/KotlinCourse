@@ -2,30 +2,16 @@ package homework.product
 
 fun main() {
     val productCards = ProductCardsRepository.productCards
-    var filteredProductCards = filter(productCards, object : Condition {
-        override fun isSuitable(productCard: ProductCard): Boolean {
-            return productCard.price > 500
-        }
-    })
-    filteredProductCards = filter(filteredProductCards, object: Condition {
-        override fun isSuitable(productCard: ProductCard): Boolean {
-            return productCard.rating > 4
-        }
-    })
-    filteredProductCards = filter(filteredProductCards, object: Condition {
-        override fun isSuitable(productCard: ProductCard): Boolean {
-            return productCard.category == ProductCategory.SPORTS
-        }
-    })
-    for (productCard in filteredProductCards) {
-        println(productCard)
-    }
+    var filteredProductCards = filter(productCards) { it.price > 500 }
+    filteredProductCards = filter(filteredProductCards) { it.rating > 4 }
+    filteredProductCards = filter(filteredProductCards) { it.category == ProductCategory.SPORTS }
+    filteredProductCards.forEach { println(it) }
 }
 
-fun filter(productCards: List<ProductCard>, condition: Condition): List<ProductCard> {
+fun filter(productCards: List<ProductCard>, isSuitable: (ProductCard) -> Boolean): List<ProductCard> {
     val filteredProductCards = mutableListOf<ProductCard>()
     for (productCard in productCards) {
-        if (condition.isSuitable(productCard)) {
+        if (isSuitable(productCard)) {
             filteredProductCards.add(productCard)
         }
     }
