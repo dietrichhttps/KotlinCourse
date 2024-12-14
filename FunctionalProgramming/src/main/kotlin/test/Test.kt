@@ -1,8 +1,18 @@
 package test
 
+import extensions.myLet
+
+var age: Int? = 15
+
 fun main() {
-    val a = readln().toInt()
-    println(a.isPositive())
+    age
+        ?.myLet {
+            if (it >= 18) {
+                "You are an adult"
+            } else {
+                "You will be an adult in ${18 - it} years"
+            }
+        }
+        ?.myLet { println(it) }
 }
 
-fun Int.isPositive() = this > 0

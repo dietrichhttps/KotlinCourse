@@ -19,3 +19,7 @@ inline fun <T> Iterable<T>.filter(isSuitable: (T) -> Boolean): List<T> {
 }
 
 inline fun <T> Iterable<T>.myForEach(operation: (T) -> Unit) {for (value in this) operation(value)}
+
+inline fun <R, T> T.myLet(block: (T) -> R): R {
+    return block(this)
+}

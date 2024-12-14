@@ -1,11 +1,19 @@
 package profile
 
-import extensions.filter
-import extensions.myForEach
-
 fun main() {
+    showEmail()
+}
+
+fun filterCollection() {
     ProfilesRepository.profiles
         .filter { it.gender == Gender.MALE }
         .sortedByDescending { it.age }
-        .myForEach { println(it)}
+        .forEach() { println(it) }
+}
+
+fun showEmail() {
+    val id = readln().toInt()
+    ProfilesRepository.profiles
+        .find { it.id == id }
+        ?.let { println(it.email) } ?: println("Not found")
 }
