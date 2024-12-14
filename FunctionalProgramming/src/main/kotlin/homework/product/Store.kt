@@ -2,24 +2,23 @@ package homework.product
 
 fun main() {
     val productCards = ProductCardsRepository.productCards
-    val filteredProductCards = filter(productCards) { it.category == ProductCategory.CLOTHING }
-    val doubledPrice = transform(filteredProductCards) { it.copy(price = it.price * 2) }
-    val transformedToString = transform(doubledPrice) { "${it.id} - ${it.name} - ${it.price}" }
-    transformedToString.forEach { println(it) }
-
+        .filter { it.category == ProductCategory.CLOTHING }
+        .transform { it.copy(price = it.price * 2) }
+        .transform { "${it.id} - ${it.name} - ${it.price}" }
+        .forEach { println(it)}
 }
 
-fun <R> transform(productCards: List<ProductCard>, operation: (ProductCard) -> R): List<R> {
+fun <R> List<ProductCard>.transform(operation: (ProductCard) -> R): List<R> {
     val result = mutableListOf<R>()
-    for (productCard in productCards) {
+    for (productCard in this) {
         result.add(operation(productCard))
     }
     return result
 }
 
-fun filter(productCards: List<ProductCard>, isSuitable: (ProductCard) -> Boolean): List<ProductCard> {
+fun List<ProductCard>.filter(isSuitable: (ProductCard) -> Boolean): List<ProductCard> {
     val filteredProductCards = mutableListOf<ProductCard>()
-    for (productCard in productCards) {
+    for (productCard in this) {
         if (isSuitable(productCard)) {
             filteredProductCards.add(productCard)
         }
