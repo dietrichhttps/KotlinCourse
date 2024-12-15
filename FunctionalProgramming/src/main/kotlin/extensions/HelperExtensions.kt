@@ -24,6 +24,10 @@ inline fun <R, T> T.myLet(block: (T) -> R): R {
     return block(this)
 }
 
+inline fun <R, T> myWith(element: T, block: T.() -> R): R {
+    return element.block()
+}
+
 inline fun <T> T.myAlso(block: (T) -> Unit): T {
     block(this)
     return this
