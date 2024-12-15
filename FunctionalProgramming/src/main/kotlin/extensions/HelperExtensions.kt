@@ -28,3 +28,8 @@ inline fun <T> T.myAlso(block: (T) -> Unit): T {
     block(this)
     return this
 }
+
+inline fun <T> T.myApply(block: T.() -> Unit): T {
+    block()
+    return this
+}

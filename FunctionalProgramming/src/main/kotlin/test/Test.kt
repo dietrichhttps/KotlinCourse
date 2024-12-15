@@ -1,10 +1,14 @@
 package test
 
+import extensions.myApply
+
 fun main() {
-    val dictionary = mutableMapOf<String, String>()
-    dictionary["hello"] = "bonjour"
-    for (entry in dictionary) {
-        println(dictionary["hello"])
-    }
+    mutableListOf<Int>().myApply {
+        while (true) {
+            print("Enter number or 0 to exit: ")
+            val input = readln().toInt().takeIf { it != 0 } ?: break
+            add(input)
+        }
+    }.forEach { println(it) }
 }
 
