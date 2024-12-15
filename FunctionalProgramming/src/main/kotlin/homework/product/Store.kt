@@ -13,6 +13,6 @@ fun main() {
             println("Convert to strings")
         }.map { "${it.id} - ${it.name} - ${it.price}" }.myAlso {
             println("Print info")
-        }.forEach { println(it) }
+        }.forEach(::println)
 
 }
