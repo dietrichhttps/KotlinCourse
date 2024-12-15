@@ -24,6 +24,10 @@ inline fun <R, T> T.myLet(block: (T) -> R): R {
     return block(this)
 }
 
+inline fun <R, T> T.myRun(operation: T.() -> R): R {
+    return operation()
+}
+
 inline fun <R, T> myWith(element: T, block: T.() -> R): R {
     return element.block()
 }
