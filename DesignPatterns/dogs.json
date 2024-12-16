@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Phillipp Petre",
+    "breed": "German Shepherd",
+    "weight": 70.0
+  },
+  {
+    "id": 2,
+    "name": "Wesley Gresley",
+    "breed": "Golden Retriever",
+    "weight": 124.5
+  },
+  {
+    "id": 3,
+    "name": "Binny Clifford",
+    "breed": "Golden Retriever",
+    "weight": 13.4
+  },
+  {
+    "id": 4,
+    "name": "Kristoffer Batrop",
+    "breed": "Golden Retriever",
+    "weight": 37.3
+  },
+  {
+    "id": 5,
+    "name": "Perry Prowse",
+    "breed": "Bulldog",
+    "weight": 48.9
+  },
+  {
+    "id": 6,
+    "name": "Inesita Walby",
+    "breed": "Labrador Retriever",
+    "weight": 91.3
+  },
+  {
+    "id": 7,
+    "name": "Kaleena Carlill",
+    "breed": "Labrador Retriever",
+    "weight": 39.7
+  },
+  {
+    "id": 8,
+    "name": "Millard Alvaro",
+    "breed": "German Shepherd",
+    "weight": 55.3
+  },
+  {
+    "id": 9,
+    "name": "Hali Duff",
+    "breed": "Bulldog",
+    "weight": 5.3
+  },
+  {
+    "id": 10,
+    "name": "Lisa Oades",
+    "breed": "Golden Retriever",
+    "weight": 139.5
+  }
+]

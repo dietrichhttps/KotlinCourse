@@ -1,4 +1,4 @@
-package homework
+package homework.game
 
 import kotlin.concurrent.thread
 import kotlin.random.Random
