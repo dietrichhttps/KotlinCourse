@@ -1,17 +1,45 @@
 package users
 
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.awt.image.ImageObserver
 import java.io.File
 
 class UsersRepository private constructor() {
 
     private val file = File("users.json")
 
+    private val observers = mutableListOf<Display>()
+
     private val _users: MutableList<User> = loadUsers()
     val users
         get() = _users.toList()
 
     private fun loadUsers(): MutableList<User> = Json.decodeFromString(file.readText().trim())
+
+    private fun notifyObservers() {
+        observers.forEach { it.onChanged(users) }
+    }
+
+    fun registerObserver(observer: Display) {
+        observers.add(observer)
+        observer.onChanged(users)
+    }
+
+    fun addUser(firstName: String, lastName: String, age: Int) {
+        val id = users.maxOf { it.id } + 1
+        _users.add(User(age, firstName, id, lastName))
+        notifyObservers()
+    }
+
+    fun deleteUser(id: Int) {
+        _users.removeIf { id == it.id }
+        notifyObservers()
+    }
+
+    fun saveChanges() {
+        file.writeText(Json.encodeToString(_users))
+    }
 
     companion object {
 
