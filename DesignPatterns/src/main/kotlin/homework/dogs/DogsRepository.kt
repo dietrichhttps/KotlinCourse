@@ -2,32 +2,41 @@ package homework.dogs
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import observer.Observable
 import observer.Observer
 import java.io.File
 
-class DogsRepository private constructor() {
-
-    private val observers = mutableListOf<Observer<List<Dog>>>()
+class DogsRepository private constructor() : Observable<List<Dog>> {
 
     private val file = File("dogs.json")
 
     private val _dogs = loadDogs()
-    val dogs
+
+    override val currentValue
         get() = _dogs.toList()
 
-    private fun loadDogs(): MutableList<Dog> = Json.decodeFromString(file.readText().trim())
+    private val _observers = mutableListOf<Observer<List<Dog>>>()
+    override val observers
+        get() = _observers.toList()
 
-    private fun notifyObservers() {
-        observers.forEach { it.onChanged(dogs) }
+    override fun registerObserver(observer: Observer<List<Dog>>) {
+        _observers.add(observer)
+        observer.onChanged(currentValue)
     }
 
     fun addOnDogsChangedListener(observer: Observer<List<Dog>>) {
-        observers.add(observer)
-        observer.onChanged(dogs)
+        registerObserver(observer)
     }
 
+    override fun unregisterObserver(observer: Observer<List<Dog>>) {
+        TODO("Not yet implemented")
+    }
+
+    private fun loadDogs(): MutableList<Dog> = Json.decodeFromString(file.readText().trim())
+
+
     fun addDog(breed: String, name: String, weight: Double) {
-        val id = dogs.maxOf { it.id } + 1
+        val id = _dogs.maxOf { it.id } + 1
         _dogs.add(Dog(breed, id, name, weight))
         notifyObservers()
     }

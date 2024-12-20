@@ -9,6 +9,8 @@ import javax.swing.JTextArea
 
 class Display {
 
+    private val repository = UsersRepository.getInstance("qwerty")
+
     fun show() {
 
         val textArea = JTextArea().apply {
@@ -23,8 +25,7 @@ class Display {
             size = Dimension(600, 600)
             add(scrollPane)
         }
-
-        UsersRepository.getInstance("qwerty").addOnUsersChangedListener {
+        repository.addOnUsersChangedListener {
             textArea.text = it.joinToString("\n")
         }
     }
