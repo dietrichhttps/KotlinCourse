@@ -3,42 +3,47 @@ package users
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import observer.MutableObservable
+import observer.Observable
 import java.io.File
 
 class UsersRepository private constructor() {
 
     private val file = File("users.json")
 
-    private val _users: MutableList<User> = loadUsers()
+    private val userList: MutableList<User> = loadUsers()
 
-    val users = MutableObservable(_users.toList())
+    private val _users = MutableObservable(userList.toList())
+    val users: Observable<List<User>>
+        get() = _users
 
-    val oldestUser = MutableObservable(_users.maxBy { it.age })
+    private val _oldestUser = MutableObservable(userList.maxBy { it.age })
+    val oldestUser: Observable<User>
+        get() = _oldestUser
 
     private fun loadUsers(): MutableList<User> = Json.decodeFromString(file.readText().trim())
 
     fun addUser(firstName: String, lastName: String, age: Int) {
-        val id = _users.maxOf { it.id } + 1
+        val id = userList.maxOf { it.id } + 1
         val user = User(age, firstName, id, lastName)
-        _users.add(user)
-        users.currentValue = _users.toList()
+        userList.add(user)
+        _users.currentValue = userList.toList()
         if (age > oldestUser.currentValue.age) {
-            oldestUser.currentValue = user
+            _oldestUser.currentValue = user
         }
 
     }
 
     fun deleteUser(id: Int) {
-        _users.removeIf { id == it.id }
-        users.currentValue = _users.toList()
-        val newOldest = _users.maxBy { it.age }
+        userList.removeIf { id == it.id }
+        _users.currentValue = userList.toList()
+        val newOldest = userList.maxBy { it.age }
         if (newOldest != oldestUser.currentValue) {
-            oldestUser.currentValue = newOldest
+            _oldestUser.currentValue = newOldest
         }
     }
 
     fun saveChanges() {
-        file.writeText(Json.encodeToString(_users))
+        file.writeText(Json.encodeToString(userList))
     }
 
     companion object {

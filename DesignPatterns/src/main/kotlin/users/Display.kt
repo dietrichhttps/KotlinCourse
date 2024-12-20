@@ -1,5 +1,6 @@
 package users
 
+import homework.dogs.Dog
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
