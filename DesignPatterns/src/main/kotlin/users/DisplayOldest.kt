@@ -7,7 +7,7 @@ import javax.swing.JFrame
 import javax.swing.JScrollPane
 import javax.swing.JTextArea
 
-class Display {
+class DisplayOldest {
 
     private val repository = UsersRepository.getInstance("qwerty")
 
@@ -25,8 +25,8 @@ class Display {
             size = Dimension(600, 600)
             add(scrollPane)
         }
-        repository.users.registerObserver {
-            textArea.text = it.joinToString("\n")
+        repository.oldestUser.registerObserver {
+            textArea.text = "Oldest person is: $it"
         }
     }
 }

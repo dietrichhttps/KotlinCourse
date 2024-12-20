@@ -2,47 +2,39 @@ package users
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import observer.Observable
-import observer.Observer
+import observer.MutableObservable
 import java.io.File
 
-class UsersRepository private constructor() : Observable<List<User>> {
+class UsersRepository private constructor() {
 
     private val file = File("users.json")
 
-    private val _observers = mutableListOf<Observer<List<User>>>()
-    override val observers
-        get() = _observers.toList()
-
     private val _users: MutableList<User> = loadUsers()
 
-    override val currentValue: List<User>
-        get() = _users.toList()
+    val users = MutableObservable(_users.toList())
+
+    val oldestUser = MutableObservable(_users.maxBy { it.age })
 
     private fun loadUsers(): MutableList<User> = Json.decodeFromString(file.readText().trim())
 
-    override fun registerObserver(observer: Observer<List<User>>) {
-        _observers.add(observer)
-        observer.onChanged(currentValue)
-    }
-
-    override fun unregisterObserver(observer: Observer<List<User>>) {
-        _observers.remove(observer)
-    }
-
-    fun addOnUsersChangedListener(observer: Observer<List<User>>) {
-        registerObserver(observer)
-    }
-
     fun addUser(firstName: String, lastName: String, age: Int) {
         val id = _users.maxOf { it.id } + 1
-        _users.add(User(age, firstName, id, lastName))
-        notifyObservers()
+        val user = User(age, firstName, id, lastName)
+        _users.add(user)
+        users.currentValue = _users.toList()
+        if (age > oldestUser.currentValue.age) {
+            oldestUser.currentValue = user
+        }
+
     }
 
     fun deleteUser(id: Int) {
         _users.removeIf { id == it.id }
-        notifyObservers()
+        users.currentValue = _users.toList()
+        val newOldest = _users.maxBy { it.age }
+        if (newOldest != oldestUser.currentValue) {
+            oldestUser.currentValue = newOldest
+        }
     }
 
     fun saveChanges() {

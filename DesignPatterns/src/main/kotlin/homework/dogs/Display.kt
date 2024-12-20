@@ -9,6 +9,8 @@ import javax.swing.JTextArea
 
 class Display {
 
+    private val repository = DogsRepository.getInstance("qwerty")
+
     fun show() {
 
         val textArea = JTextArea().apply {
@@ -24,7 +26,7 @@ class Display {
             add(scrollPane)
         }
 
-        DogsRepository.getInstance("qwerty").addOnDogsChangedListener {
+        repository.dogs.registerObserver {
             textArea.text = it.joinToString("\n")
         }
     }
