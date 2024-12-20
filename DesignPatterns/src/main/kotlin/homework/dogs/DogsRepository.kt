@@ -2,11 +2,12 @@ package homework.dogs
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import observer.Observer
 import java.io.File
 
 class DogsRepository private constructor() {
 
-    private val observers = mutableListOf<Display>()
+    private val observers = mutableListOf<Observer<List<Dog>>>()
 
     private val file = File("dogs.json")
 
@@ -20,7 +21,7 @@ class DogsRepository private constructor() {
         observers.forEach { it.onChanged(dogs) }
     }
 
-    fun registerObserver(observer: Display) {
+    fun registerObserver(observer: Observer<List<Dog>>) {
         observers.add(observer)
         observer.onChanged(dogs)
     }

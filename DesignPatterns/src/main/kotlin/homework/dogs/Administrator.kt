@@ -9,7 +9,7 @@ class Administrator {
         val operations = Operation.entries
 
         while (true) {
-            print("Enter an operation: ")
+            print("Enter an operation: ")     
             print(
                 operations
                     .mapIndexed { index, operation -> "$index - ${operation.title}" }
