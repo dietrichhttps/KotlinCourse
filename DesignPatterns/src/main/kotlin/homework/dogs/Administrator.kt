@@ -10,7 +10,7 @@ class Administrator {
         val operations = Operation.entries
 
         while (true) {
-            print("Enter an operation: ")     
+            print("Enter an operation: ")
             print(
                 operations
                     .mapIndexed { index, operation -> "$index - ${operation.title}" }
@@ -20,7 +20,7 @@ class Administrator {
             val operation = operations[operationIndex]
             when (operation) {
                 Operation.EXIT -> {
-                    repository.saveChanges()
+                    dogsInvoker.addCommand(AdministratorCommands.SaveChanges(repository))
                     break
                 }
 
@@ -37,16 +37,12 @@ class Administrator {
         val name = readln()
         print("Enter weight: ")
         val weight = readln().toDouble()
-        dogsInvoker.addCommand {
-            repository.addDog(breed, name, weight)
-        }
+        dogsInvoker.addCommand(AdministratorCommands.AddDog(repository, breed, name, weight))
     }
 
     private fun deleteDog() {
         print("Enter id: ")
         val id = readln().toInt()
-        dogsInvoker.addCommand {
-            repository.deleteDog(id)
-        }
+        DogsInvoker.addCommand(AdministratorCommands.DeleteDog(repository, id))
     }
 }

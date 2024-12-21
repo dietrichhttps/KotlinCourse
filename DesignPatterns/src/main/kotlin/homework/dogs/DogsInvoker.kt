@@ -2,12 +2,12 @@ package homework.dogs
 
 import command.Command
 import command.Invoker
-import java.util.concurrent.LinkedBlockingDeque
+import java.util.concurrent.LinkedBlockingQueue
 import kotlin.concurrent.thread
 
-object DogsInvoker : Invoker {
+object DogsInvoker : Invoker<AdministratorCommands> {
 
-    private val commands = LinkedBlockingDeque<Command>()
+    private val commands = LinkedBlockingQueue<Command>()
 
     init {
         thread {
@@ -21,7 +21,7 @@ object DogsInvoker : Invoker {
         }
     }
 
-    override fun addCommand(command: Command) {
+    override fun addCommand(command: AdministratorCommands) {
         println("New command: $command")
         commands.add(command)
     }
