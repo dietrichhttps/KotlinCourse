@@ -3,6 +3,7 @@ package homework.dogs
 class Administrator {
 
     private val repository = DogsRepository.getInstance("qwerty")
+    private val dogsInvoker = DogsInvoker
 
     fun work() {
 
@@ -36,12 +37,16 @@ class Administrator {
         val name = readln()
         print("Enter weight: ")
         val weight = readln().toDouble()
-        repository.addDog(breed, name, weight)
+        dogsInvoker.addCommand {
+            repository.addDog(breed, name, weight)
+        }
     }
 
     private fun deleteDog() {
         print("Enter id: ")
         val id = readln().toInt()
-        repository.deleteDog(id)
+        dogsInvoker.addCommand {
+            repository.deleteDog(id)
+        }
     }
 }

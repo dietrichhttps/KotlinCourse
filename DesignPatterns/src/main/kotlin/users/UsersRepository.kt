@@ -23,6 +23,7 @@ class UsersRepository private constructor() {
     private fun loadUsers(): MutableList<User> = Json.decodeFromString(file.readText().trim())
 
     fun addUser(firstName: String, lastName: String, age: Int) {
+        Thread.sleep(10_000)
         val id = userList.maxOf { it.id } + 1
         val user = User(age, firstName, id, lastName)
         userList.add(user)
@@ -34,6 +35,7 @@ class UsersRepository private constructor() {
     }
 
     fun deleteUser(id: Int) {
+        Thread.sleep(10_000)
         userList.removeIf { id == it.id }
         _users.currentValue = userList.toList()
         val newOldest = userList.maxBy { it.age }

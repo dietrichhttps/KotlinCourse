@@ -19,12 +19,14 @@ class DogsRepository private constructor() {
     private fun loadDogs(): MutableList<Dog> = Json.decodeFromString(file.readText().trim())
 
     fun addDog(breed: String, name: String, weight: Double) {
+        Thread.sleep(5_000)
         val id = dogList.maxOf { it.id } + 1
         dogList.add(Dog(breed, id, name, weight))
         _dogs.currentValue = dogList.toList()
     }
 
     fun deleteDog(id: Int) {
+        Thread.sleep(5_000)
         dogList.removeIf { it.id == id }
         _dogs.currentValue = dogList.toList()
     }

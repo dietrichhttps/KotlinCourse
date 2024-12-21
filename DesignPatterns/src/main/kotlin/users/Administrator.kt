@@ -2,7 +2,8 @@ package users
 
 class Administrator {
 
-    private val usersRepository = UsersRepository.getInstance("qwerty")
+    private val repository = UsersRepository.getInstance("qwerty")
+    private val usersInvoker = UsersInvoker
 
     fun work() {
         val operations = Operation.entries
@@ -17,7 +18,7 @@ class Administrator {
             val operationCode = operations[operationCodeIndex]
             when (operationCode) {
                 Operation.EXIT -> {
-                    usersRepository.saveChanges()
+                    repository.saveChanges()
                     break
                 }
                 Operation.ADD_USER -> addUser()
@@ -33,12 +34,16 @@ class Administrator {
         val lastName = readln()
         print("Enter age: ")
         val age = readln().toInt()
-        usersRepository.addUser(firstName, lastName, age)
+        usersInvoker.addCommand {
+            repository.addUser(firstName, lastName, age)
+        }
     }
 
     private fun deleteUser() {
         print("Enter id: ")
         val id = readln().toInt()
-        usersRepository.deleteUser(id)
+        usersInvoker.addCommand {
+            repository.deleteUser(id)
+        }
     }
 }
