@@ -22,7 +22,7 @@ class NumbersMutableListTest {
             list.add(it)
         }
         list.add(0, 1000)
-        assertEquals(1000, list.get(0))
+        assertEquals(1000, list[0])
     }
 
     @ParameterizedTest
@@ -32,7 +32,7 @@ class NumbersMutableListTest {
             list.add(it)
         }
         list.add(100, 1001)
-        assertEquals(1001, list.get(100))
+        assertEquals(1001, list[100])
     }
 
     @ParameterizedTest
@@ -42,7 +42,7 @@ class NumbersMutableListTest {
             list.add(it)
         }
         list.add(50, 1002)
-        assertEquals(1002, list.get(50))
+        assertEquals(1002, list[50])
     }
 
     @ParameterizedTest
@@ -69,7 +69,7 @@ class NumbersMutableListTest {
         repeat(10) {
             list.add(it)
         }
-        assertEquals(5, list.get(5))
+        assertEquals(5, list[5])
     }
 
     @ParameterizedTest
@@ -78,7 +78,7 @@ class NumbersMutableListTest {
         repeat(100) {
             list.add(it)
         }
-        assertEquals(50, list.get(50))
+        assertEquals(50, list[50])
     }
 
     @ParameterizedTest
@@ -98,7 +98,7 @@ class NumbersMutableListTest {
             list.add(it)
         }
         list.removeAt(50)
-        assertEquals(51, list.get(50))
+        assertEquals(51, list[50])
     }
 
     @ParameterizedTest
@@ -108,7 +108,7 @@ class NumbersMutableListTest {
             list.add(it)
         }
         list.remove(50)
-        assertEquals(51, list.get(50))
+        assertEquals(51, list[50])
     }
 
     @ParameterizedTest

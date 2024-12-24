@@ -4,11 +4,19 @@ interface NumbersMutableList {
 
     val size: Int
 
+    operator fun plus(number: Int) {
+        add(number)
+    }
+
+    operator fun minus(number: Int) {
+        remove(number)
+    }
+
     fun add(number: Int)
 
     fun add(index: Int, number: Int)
 
-    fun get(index: Int): Int
+    operator fun get(index: Int): Int
 
     fun removeAt(index: Int)
 
