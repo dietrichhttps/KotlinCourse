@@ -1,14 +1,13 @@
 package collections
 
+import kotlin.time.measureTime
+
 fun main() {
     val numbers = mutableListOf<Int>()
-    while (true) {
-        val number = readln().toInt()
-        if (number != 0) {
-            numbers.add(number)
-        } else {
-            break
+    val time = measureTime {
+        repeat(1_000_000) {
+            numbers.add(0, it)
         }
     }
-    numbers.forEach(::println)
+    println("Time: $time")
 }
