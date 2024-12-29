@@ -2,32 +2,32 @@ package collections
 
 import kotlin.math.abs
 
-class NumbersHashSet : NumbersMutableSet {
+class NumbersHashSet<T> : NumbersMutableSet<T> {
 
-    private var elements = arrayOfNulls<Node>(INITIAL_CAPACITY)
+    var elements = arrayOfNulls<Node<T>>(INITIAL_CAPACITY)
 
     override var size: Int = 0
         private set
 
-    override fun add(number: Int): Boolean {
+    override fun add(element: T): Boolean {
         if (size >= elements.size * LOAD_FACTOR) {
             increaseArray()
         }
-        return add(number, elements).also { added ->
+        return add(element, elements).also { added ->
             if (added) size++
         }
     }
 
-    private fun add(number: Int, array: Array<Node?>): Boolean {
-        val newElement = Node(number)
-        val position = getElementPosition(number, array.size)
+    private fun add(element: T, array: Array<Node<T>?>): Boolean {
+        val newElement = Node(element)
+        val position = getElementPosition(element, array.size)
         var existedElement = array[position]
         if (existedElement == null) {
             array[position] = newElement
             return true
         } else {
             while (true) {
-                if (existedElement?.item == number) return false
+                if (existedElement?.item == element) return false
                 if (existedElement?.next == null) {
                     existedElement?.next = newElement
                     return true
@@ -37,19 +37,19 @@ class NumbersHashSet : NumbersMutableSet {
         }
     }
 
-    override fun remove(number: Int) {
-        val position = getElementPosition(number, elements.size)
+    override fun remove(element: T) {
+        val position = getElementPosition(element, elements.size)
         val existedElement = elements[position] ?: return
-        if (existedElement.item == number) {
+        if (existedElement.item == element) {
             elements[position] = existedElement.next
             size--
             return
         }
-        var before: Node? = existedElement
+        var before: Node<T>? = existedElement
         while (before?.next != null) {
             val removingElement = before.next
-            if (removingElement?.item == number) {
-                before.next = removingElement.next
+            if (removingElement?.item == element) {
+                before.next = removingElement?.next
                 size--
                 return
             }
@@ -57,11 +57,11 @@ class NumbersHashSet : NumbersMutableSet {
         }
     }
 
-    override fun contains(number: Int): Boolean {
-        val position = getElementPosition(number, elements.size)
+    override fun contains(element: T): Boolean {
+        val position = getElementPosition(element, elements.size)
         var existedElement = elements[position]
         while (existedElement != null) {
-            if (existedElement.item == number) return true
+            if (existedElement.item == element) return true
             existedElement = existedElement.next
         }
         return false
@@ -72,12 +72,12 @@ class NumbersHashSet : NumbersMutableSet {
         size = 0
     }
 
-    private fun getElementPosition(number: Int, arraySize: Int): Int {
-        return abs(number % arraySize)
+    private fun getElementPosition(element: T, arraySize: Int): Int {
+        return abs(element.hashCode() % arraySize)
     }
 
     private fun increaseArray() {
-        val newArray = arrayOfNulls<Node>(elements.size * 2)
+        val newArray = arrayOfNulls<Node<T>>(elements.size * 2)
         for (node in elements) {
             var currentElement = node
             while (currentElement != null) {
@@ -88,9 +88,9 @@ class NumbersHashSet : NumbersMutableSet {
         elements = newArray
     }
 
-    data class Node(
-        val item: Int,
-        var next: Node? = null
+    data class Node<T>(
+        val item: T,
+        var next: Node<T>? = null
     )
 
     companion object {

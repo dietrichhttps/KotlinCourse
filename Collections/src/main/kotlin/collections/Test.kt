@@ -1,11 +1,12 @@
 package collections
 
+import kotlin.random.Random
+
 fun main() {
-    val numbers = NumbersHashSet()
-    numbers.add(1000)
-    numbers.add(100)
-    numbers.add(8)
-    numbers.add(16)
-//    numbers.elements.forEach(::println)
-    numbers.remove(8)
+    NumbersHashSet<Item>().apply {
+        repeat(100) {
+            add(Item(Random.nextInt(1000)))
+        }
+        elements.forEach(::println)
+    }
 }
