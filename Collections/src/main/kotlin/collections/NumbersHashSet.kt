@@ -4,7 +4,7 @@ import kotlin.math.abs
 
 class NumbersHashSet : NumbersMutableSet {
 
-    var elements = arrayOfNulls<Node>(INITIAL_CAPACITY)
+    private var elements = arrayOfNulls<Node>(INITIAL_CAPACITY)
 
     override var size: Int = 0
         private set
@@ -13,7 +13,7 @@ class NumbersHashSet : NumbersMutableSet {
         if (size >= elements.size * LOAD_FACTOR) {
             increaseArray()
         }
-        return add(number, elements). also { added ->
+        return add(number, elements).also { added ->
             if (added) size++
         }
     }
@@ -38,15 +38,38 @@ class NumbersHashSet : NumbersMutableSet {
     }
 
     override fun remove(number: Int) {
-        TODO("Not yet implemented")
+        val position = getElementPosition(number, elements.size)
+        val existedElement = elements[position] ?: return
+        if (existedElement.item == number) {
+            elements[position] = existedElement.next
+            size--
+            return
+        }
+        var before: Node? = existedElement
+        while (before?.next != null) {
+            val removingElement = before.next
+            if (removingElement?.item == number) {
+                before.next = removingElement.next
+                size--
+                return
+            }
+            before = before.next
+        }
     }
 
     override fun contains(number: Int): Boolean {
-        TODO("Not yet implemented")
+        val position = getElementPosition(number, elements.size)
+        var existedElement = elements[position]
+        while (existedElement != null) {
+            if (existedElement.item == number) return true
+            existedElement = existedElement.next
+        }
+        return false
     }
 
     override fun clear() {
-        TODO("Not yet implemented")
+        elements = arrayOfNulls(INITIAL_CAPACITY)
+        size = 0
     }
 
     private fun getElementPosition(number: Int, arraySize: Int): Int {
