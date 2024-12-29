@@ -1,6 +1,6 @@
 package collections
 
-interface NumbersMutableSet<T> {
+interface MyMutableSet<T> {
 
     val size: Int
 
