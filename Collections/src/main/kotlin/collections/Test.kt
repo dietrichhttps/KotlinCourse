@@ -3,10 +3,13 @@ package collections
 import kotlin.random.Random
 
 fun main() {
-    MyHashSet<Item>().apply {
+    val elements = MyLinkedList<Item>().apply {
         repeat(100) {
             add(Item(Random.nextInt(1000)))
         }
-        elements.forEach(::println)
+    }
+
+    for (element in elements) {
+        println(element)
     }
 }

@@ -4,7 +4,7 @@ import kotlin.math.abs
 
 class MyHashSet<T> : MyMutableSet<T> {
 
-    var elements = arrayOfNulls<Node<T>>(INITIAL_CAPACITY)
+    private var elements = arrayOfNulls<Node<T>>(INITIAL_CAPACITY)
 
     override var size: Int = 0
         private set
@@ -86,6 +86,29 @@ class MyHashSet<T> : MyMutableSet<T> {
             }
         }
         elements = newArray
+    }
+
+    override fun iterator(): Iterator<T> {
+        return object : Iterator<T> {
+
+            private var nodeIndex = 0
+            private var nextNode = elements[nodeIndex]
+            private var nextIndex = 0
+
+            override fun hasNext(): Boolean {
+                return nodeIndex < size
+            }
+
+            override fun next(): T {
+                while (nextNode == null) {
+                    nextNode = elements[++nodeIndex]
+                }
+                return nextNode?.item!!.also {
+                    nextIndex++
+                    nextNode = nextNode?.next
+                }
+            }
+        }
     }
 
     data class Node<T>(
