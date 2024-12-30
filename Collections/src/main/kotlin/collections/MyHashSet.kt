@@ -6,10 +6,13 @@ class MyHashSet<T> : MyMutableSet<T> {
 
     private var elements = arrayOfNulls<Node<T>>(INITIAL_CAPACITY)
 
+    private var modCount = 0
+
     override var size: Int = 0
         private set
 
     override fun add(element: T): Boolean {
+        modCount++
         if (size >= elements.size * LOAD_FACTOR) {
             increaseArray()
         }
@@ -19,6 +22,7 @@ class MyHashSet<T> : MyMutableSet<T> {
     }
 
     private fun add(element: T, array: Array<Node<T>?>): Boolean {
+        modCount++
         val newElement = Node(element)
         val position = getElementPosition(element, array.size)
         var existedElement = array[position]
@@ -38,6 +42,7 @@ class MyHashSet<T> : MyMutableSet<T> {
     }
 
     override fun remove(element: T) {
+        modCount++
         val position = getElementPosition(element, elements.size)
         val existedElement = elements[position] ?: return
         if (existedElement.item == element) {
@@ -68,6 +73,7 @@ class MyHashSet<T> : MyMutableSet<T> {
     }
 
     override fun clear() {
+        modCount++
         elements = arrayOfNulls(INITIAL_CAPACITY)
         size = 0
     }
@@ -88,18 +94,21 @@ class MyHashSet<T> : MyMutableSet<T> {
         elements = newArray
     }
 
-    override fun iterator(): Iterator<T> {
-        return object : Iterator<T> {
+    override fun iterator(): MutableIterator<T> {
+        return object : MutableIterator<T> {
 
             private var nodeIndex = 0
             private var nextNode = elements[nodeIndex]
             private var nextIndex = 0
+
+            private val currentModCount = modCount
 
             override fun hasNext(): Boolean {
                 return nodeIndex < size
             }
 
             override fun next(): T {
+                if (currentModCount != modCount) throw ConcurrentModificationException()
                 while (nextNode == null) {
                     nextNode = elements[++nodeIndex]
                 }
@@ -107,6 +116,10 @@ class MyHashSet<T> : MyMutableSet<T> {
                     nextIndex++
                     nextNode = nextNode?.next
                 }
+            }
+
+            override fun remove() {
+                TODO("Not yet implemented")
             }
         }
     }

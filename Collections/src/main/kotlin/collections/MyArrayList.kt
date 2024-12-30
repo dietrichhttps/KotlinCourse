@@ -4,6 +4,8 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
 
     private var elements = arrayOfNulls<Any>(initialCapacity)
 
+    private var modCount = 0
+
     override var size: Int = 0
         private set
 
@@ -29,14 +31,15 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
 
 
     override fun add(element: T): Boolean {
+        modCount++
         growIfNeeded()
         elements[size] = element
         size++
         return true
-
     }
 
     override fun add(index: Int, element: T) {
+        modCount++
         checkIndexForAdding(index)
         growIfNeeded()
         System.arraycopy(elements, index, elements, index + 1, size - index)
@@ -45,6 +48,7 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
     }
 
     override fun removeAt(index: Int) {
+        modCount++
         checkIndex(index)
         System.arraycopy(elements, index + 1, elements, index, size - index - 1)
         size--
@@ -52,6 +56,7 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
     }
 
     override fun remove(element: T) {
+        modCount++
         for (i in 0 until size) {
             if (elements[i] == element) {
                 removeAt(i)
@@ -75,21 +80,28 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
     }
 
     override fun clear() {
+        modCount++
         elements = arrayOfNulls(INITIAL_CAPACITY)
         size = 0
     }
 
-    override fun iterator(): Iterator<T> {
-        return object : Iterator<T> {
+    override fun iterator(): MutableIterator<T> {
+        return object : MutableIterator<T> {
 
             private var nextIndex = 0
+            private val currentModCont = modCount
 
             override fun hasNext(): Boolean {
                 return nextIndex < size
             }
 
             override fun next(): T {
+                if (currentModCont != modCount) throw ConcurrentModificationException()
                 return elements[nextIndex++] as T
+            }
+
+            override fun remove() {
+                TODO("Not yet implemented")
             }
         }
     }
