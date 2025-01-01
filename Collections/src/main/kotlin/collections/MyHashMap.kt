@@ -6,6 +6,8 @@ class MyHashMap<K, V> : MyMutableMap<K, V> {
 
     private var elements = arrayOfNulls<Node<K, V>>(INITIAL_CAPACITY)
 
+    private var modCount = 0
+
     override var size: Int = 0
         private set
 
@@ -20,6 +22,7 @@ class MyHashMap<K, V> : MyMutableMap<K, V> {
         }
 
     override fun put(key: K, value: V): V? {
+        modCount++
         if (size >= elements.size * LOAD_FACTOR) {
             increaseArray()
         }
@@ -53,6 +56,7 @@ class MyHashMap<K, V> : MyMutableMap<K, V> {
     }
 
     override fun remove(key: K): V? {
+        modCount++
         val position = getElementPosition(key, elements.size)
         val existedElement = elements[position] ?: return null
         if (existedElement.key == key) {
@@ -101,6 +105,7 @@ class MyHashMap<K, V> : MyMutableMap<K, V> {
     }
 
     override fun clear() {
+        modCount++
         elements = arrayOfNulls(INITIAL_CAPACITY)
         size = 0
     }
@@ -127,6 +132,36 @@ class MyHashMap<K, V> : MyMutableMap<K, V> {
             while (currentElement != null) {
                 operation(currentElement)
                 currentElement = currentElement.next
+            }
+        }
+    }
+
+    fun keyIterator(): MutableIterator<K> {
+        return object : MutableIterator<K> {
+
+            private var nodeIndex = 0
+            private var nextNode = elements[nodeIndex]
+            private var nextIndex = 0
+
+            private val currentModCount = modCount
+
+            override fun hasNext(): Boolean {
+                return nodeIndex < size
+            }
+
+            override fun next(): K {
+                if (currentModCount != modCount) throw ConcurrentModificationException()
+                while (nextNode == null) {
+                    nextNode = elements[++nodeIndex]
+                }
+                return nextNode?.key!!.also {
+                    nextIndex++
+                    nextNode = nextNode?.next
+                }
+            }
+
+            override fun remove() {
+                TODO("Not yet implemented")
             }
         }
     }
