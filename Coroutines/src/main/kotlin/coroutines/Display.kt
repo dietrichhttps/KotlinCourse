@@ -7,12 +7,15 @@ import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
+import java.util.concurrent.Executors
 import javax.swing.*
 import kotlin.concurrent.thread
 
 object Display {
 
-    private val scope = CoroutineScope(CoroutineName("My coroutine") + Dispatchers.Unconfined)
+    private val dispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+
+    private val scope = CoroutineScope(CoroutineName("My coroutine") + dispatcher)
 
     private val infoArea = JTextArea().apply {
         isEditable = false
