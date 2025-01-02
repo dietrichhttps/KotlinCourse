@@ -1,4 +1,4 @@
-package callbacks
+package concurrency
 
 fun main() {
     Display.show()
