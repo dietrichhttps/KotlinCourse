@@ -1,8 +1,9 @@
-package coldFlows
+package hotFlows
 
-import hotFlows.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
@@ -11,16 +12,16 @@ private val scope = CoroutineScope(Executors.newCachedThreadPool().asCoroutineDi
 fun main() {
     val flow = Repository.timer
     scope.launch {
-//        flow.take(3)
+//        flow
 //            .collect {
-//                println(it)
+//                println("Coroutine 1: $it")
 //            }
     }
     scope.launch {
-        flow
-            .collect {
-                println(it)
-            }
+        delay(5000)
+        flow.take(1).collect {
+            println("Coroutine 2: $it")
+        }
         println("Finished")
     }
 }
