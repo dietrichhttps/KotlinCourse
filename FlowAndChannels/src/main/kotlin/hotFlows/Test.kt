@@ -10,18 +10,17 @@ import java.util.concurrent.Executors
 private val scope = CoroutineScope(Executors.newCachedThreadPool().asCoroutineDispatcher())
 
 fun main() {
-    val flow = Repository.timer
+    val flow = Repository2.timer
     scope.launch {
-//        flow
-//            .collect {
-//                println("Coroutine 1: $it")
-//            }
+        delay(3000)
+        flow.take(1).collect {
+            println("Coroutine 1: $it")
+        }
     }
     scope.launch {
         delay(5000)
-        flow.take(1).collect {
+        flow.collect {
             println("Coroutine 2: $it")
         }
-        println("Finished")
     }
 }
