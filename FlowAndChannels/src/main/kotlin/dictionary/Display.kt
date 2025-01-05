@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.awt.BorderLayout
@@ -16,7 +17,7 @@ import javax.swing.*
 object Display {
 
     private val queries = Channel<String>()
-    private val state = MutableSharedFlow<ScreenState>()
+    val state = MutableStateFlow<ScreenState>(ScreenState.Initial)
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val repository = Repository
@@ -80,9 +81,7 @@ object Display {
                 }
             }.launchIn(scope)
 
-        state.onStart {
-            emit(ScreenState.Initial)
-        }.onEach {
+        state.onEach {
             when (it) {
                 is ScreenState.DefinitionsLoaded -> {
                     resultArea.text = it.definitions.joinToString("\n\n")
@@ -113,4 +112,18 @@ fun main() {
     System.setProperty("awt.useSystemAAFontSettings", "on")
     System.setProperty("swing.aatext", "true")
     Display.show()
+    CoroutineScope(Dispatchers.IO).launch {
+        delay(10_000)
+        println("Second subscriber")
+        Display.state.collect {
+            println(it)
+        }
+    }
+    CoroutineScope(Dispatchers.IO).launch {
+        delay(10_000)
+        println("Third subscriber")
+        Display.state.collect {
+            println(it)
+        }
+    }
 }
