@@ -3,7 +3,6 @@ package dictionary
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.awt.BorderLayout
@@ -15,7 +14,7 @@ import javax.swing.*
 @Suppress("OPT_IN_USAGE")
 object Display {
 
-    private val queries = Channel<String>()
+    private val queries = MutableSharedFlow<String>()
     private val state = MutableStateFlow<ScreenState>(ScreenState.Initial)
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -54,7 +53,7 @@ object Display {
 
     private fun loadDefinitions() {
         scope.launch {
-            queries.send(searchField.text.trim())
+            queries.emit(searchField.text.trim())
         }
     }
 
@@ -63,7 +62,7 @@ object Display {
     }
 
     init {
-        queries.receiveAsFlow()
+        queries
             .onEach {
                 state.emit(ScreenState.Loading)
             }.debounce(500)
