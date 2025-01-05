@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.awt.BorderLayout
@@ -17,7 +16,7 @@ import javax.swing.*
 object Display {
 
     private val queries = Channel<String>()
-    val state = MutableStateFlow<ScreenState>(ScreenState.Initial)
+    private val state = MutableStateFlow<ScreenState>(ScreenState.Initial)
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val repository = Repository
@@ -64,7 +63,7 @@ object Display {
     }
 
     init {
-        queries.consumeAsFlow()
+        queries.receiveAsFlow()
             .onEach {
                 state.emit(ScreenState.Loading)
             }.debounce(500)
@@ -79,7 +78,13 @@ object Display {
                         state.emit(ScreenState.NotFound)
                     }
                 }
-            }.launchIn(scope)
+            }
+            .retry {
+                println(it)
+                state.emit(ScreenState.Error)
+                true
+            }
+            .launchIn(scope)
 
         state.onEach {
             when (it) {
@@ -102,6 +107,11 @@ object Display {
                     resultArea.text = "Not found"
                     searchButton.isEnabled = true
                 }
+
+                ScreenState.Error -> {
+                    resultArea.text = "Something went wrong"
+                    searchButton.isEnabled = true
+                }
             }
         }
             .launchIn(scope)
@@ -112,18 +122,18 @@ fun main() {
     System.setProperty("awt.useSystemAAFontSettings", "on")
     System.setProperty("swing.aatext", "true")
     Display.show()
-    CoroutineScope(Dispatchers.IO).launch {
-        delay(10_000)
-        println("Second subscriber")
-        Display.state.collect {
-            println(it)
-        }
-    }
-    CoroutineScope(Dispatchers.IO).launch {
-        delay(10_000)
-        println("Third subscriber")
-        Display.state.collect {
-            println(it)
-        }
-    }
+//    CoroutineScope(Dispatchers.IO).launch {
+//        delay(10_000)
+//        println("Second subscriber")
+//        Display.state.collect {
+//            println(it)
+//        }
+//    }
+//    CoroutineScope(Dispatchers.IO).launch {
+//        delay(10_000)
+//        println("Third subscriber")
+//        Display.state.collect {
+//            println(it)
+//        }
+//    }
 }

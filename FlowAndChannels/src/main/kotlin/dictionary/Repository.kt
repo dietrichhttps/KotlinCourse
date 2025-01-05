@@ -3,6 +3,7 @@ package dictionary
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
+import java.net.SocketTimeoutException
 import java.net.URI
 import java.util.concurrent.Executors
 
@@ -22,11 +23,10 @@ object Repository {
                 val url = URI(urlString).toURL()
                 connection = (url.openConnection() as HttpURLConnection).apply {
                     addRequestProperty(HEADER_KEY, API_KEY)
+                    readTimeout = 5000
                 }
                 val response = connection.inputStream.bufferedReader().readText()
                 json.decodeFromString<Definition>(response).mapDefinitionToList()
-            } catch (e: Exception) {
-                listOf()
             } finally {
                 connection?.disconnect()
             }
