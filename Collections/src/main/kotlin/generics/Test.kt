@@ -22,3 +22,5 @@ private fun showName(worker: Worker) {
 open class Worker(val name: String)
 
 class Programmer(name: String) : Worker(name)
+
+class Director(name: String) : Worker(name)
