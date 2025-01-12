@@ -1,26 +1,32 @@
 package generics
 
+import collections.MyArrayList
 import collections.MyList
 import collections.myListOf
 
 fun main() {
-    val worker = Programmer("John")
-    showName(worker)
-
-    val workers: MyList<Programmer> = myListOf(Programmer("Nick"), Programmer("Ivan"))
-    showCount(workers)
+    val workers = myListOf(Director("John"), Programmer("Alexis"), Programmer("Nicko"))
+    workers
+        .myFilterIsInstance<Programmer>()
+        .forEach {it.writeCode()}
 }
 
-private fun showCount(workers: MyList<Worker>) {
-    println(workers.size)
-}
-
-private fun showName(worker: Worker) {
-    println(worker.name)
+inline fun <reified R> MyList<*>.myFilterIsInstance(): MyList<R> {
+    val result = MyArrayList<R>()
+    for (element in this) {
+        if (element is R) {
+            result.add(element)
+        }
+    }
+    return result
 }
 
 open class Worker(val name: String)
 
-class Programmer(name: String) : Worker(name)
+class Programmer(name: String) : Worker(name) {
+    fun writeCode() {
+        println("I'm writing the code...")
+    }
+}
 
 class Director(name: String) : Worker(name)
